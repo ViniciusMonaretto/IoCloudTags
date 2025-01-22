@@ -1,4 +1,4 @@
-import sqlite3
+import aiosqlite
 import os
 import json
 
@@ -14,9 +14,9 @@ class DatabaseConnector:
     def __init__(self, database_path: str):
         self._database_path = database_path
 
-    def initialize_data_bank(self):
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
+    async def initialize_data_bank(self):
+        conn = await aiosqlite.connect(DB_NAME)
+        cursor = await conn.cursor()
 
         self._config_models = {}
 
@@ -30,32 +30,30 @@ class DatabaseConnector:
                 for config in data["TableConfigs"]:
                     databaseConfig = DatabaseConfigModel(config)
                     self._config_models[databaseConfig.name] = databaseConfig
-                    cursor.execute(databaseConfig.createCommand) 
+                    await cursor.execute(databaseConfig.createCommand) 
 
-                conn.commit()
+                await conn.commit()
                 conn.close()
             except json.JSONDecodeError as e:
                 print(f"Error processing file {filename}: {e}")
 
-    def init_service(self):
-        self.initialize_data_bank()
+    async def init_service(self):
+        await self.initialize_data_bank()
 
-    def add_info_to_table(self, model: ModelInterface):
-        conn = sqlite3.connect(DB_NAME)
-
+    async def add_info_to_table(self, model: ModelInterface):
         model_obj = model.getModelObject()
 
         columns = ", ".join(model_obj.keys())
         placeholders = ", ".join(["?" for _ in model_obj.values()])
         query = f"INSERT INTO {model.getCollectionName()} ({columns}) VALUES ({placeholders})"
 
-        cursor = conn.cursor()
-        cursor.execute(query, tuple(model_obj.values()))
-        conn.commit()
-        return cursor.lastrowid
+        async with aiosqlite.connect(DB_NAME) as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, tuple(model_obj.values()))
+                await conn.commit()
+                return cursor.lastrowid
     
-    def find_info_from_table(self, table_name, conditions: dict[str, str] = None):
-        conn = sqlite3.connect(DB_NAME)
+    async def find_info_from_table(self, table_name, conditions: dict[str, str] = None):
         query = f"SELECT * FROM {table_name}"
         values = []
 
@@ -64,15 +62,17 @@ class DatabaseConnector:
             query += f" WHERE {where_clause}"
             values = list(conditions.values())
 
-        cursor = conn.cursor()
-        cursor.execute(query, values)
-        return cursor.fetchall()
+        async with aiosqlite.connect(DB_NAME) as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, values)
+                return await cursor.fetchall()
 
     
-    def remove_info_from_table(self, table_name, id):
-        conn = sqlite3.connect(DB_NAME)
+    async def remove_info_from_table(self, table_name, id):
         query = f"DELETE FROM {table_name} WHERE id = ?"
-        cursor = conn.cursor()
-        cursor.execute(query, (id,))
-        conn.commit()
-        return cursor.rowcount
+        async with aiosqlite.connect(DB_NAME) as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, (id,))
+                await conn.commit()
+                return cursor.rowcount
+       
