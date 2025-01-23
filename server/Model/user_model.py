@@ -23,11 +23,11 @@ class User(ModelInterface):
         self._phone_number = ""
         self._type = TypeOfUser.Unknow
 
-    def __init__(self, name: str, email: str, phone_number:str, type_of_user: TypeOfUser, password: str):
+    def initialize(self, name: str, email: str, phone_number:str, type_of_user: TypeOfUser, password: str):
         self._name = name
         self._email = email
         self._phone_number = phone_number
-        self._type = type_of_user
+        self._type = TypeOfUser(type_of_user)
         self._passwd_hash = self.hash_password(password)
     
     def getCollectionName(self) -> str:
@@ -43,12 +43,23 @@ class User(ModelInterface):
         return model
 
     def setModelObject(self, model_gen_object: dict[str, object]):
+        self._id = int(model_gen_object["id"])
         self._name = model_gen_object["Name"]
         self._email = model_gen_object["Email"]
         self._phone_number = model_gen_object["PhoneNumber"]
-        self._type = model_gen_object["Type"]
+        self._type = TypeOfUser(model_gen_object["Type"])
         self._passwd_hash = model_gen_object["HashedPassword"]
     
+    def toStr(self) -> str:
+        json = {
+            "id": self._id,
+            "Name": self._name,
+            "Email": self._email,
+            "PhoneNumber": self._phone_number,
+            "Type": self._type.value
+        }
+
+        return str(json)
 
     def hash_password(self, password):
         # Convert username and password to bytes

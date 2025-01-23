@@ -7,10 +7,9 @@ async def main():
     dat = DatabaseConnector("")
     await dat.init_service()
 
-    loop = asyncio.get_event_loop()
-    loop.create_task(start_server())
-    loop.run_forever()
-    
+    app_manager = AppManager(dat)
+
+    await app_manager.run()
 
     # user = User("Joaquim Barbosa", "joaquim@gmail.com", "5199999999", TypeOfUser.Guard, "teste")
 

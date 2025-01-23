@@ -1,50 +1,31 @@
 import asyncio
 from time import sleep
 from services.database_conector.database_connector import DatabaseConnector
-#from .visualization.visualization_manager import Visualization, VisualizationWebSocketHandler
+from .api.api_handler import ApiServer
 
-
-import tornado.web
-import os
 
 class AppManager:
     def __init__(self, database_connector: DatabaseConnector):
         self._database_connector = database_connector
-        self.m_Server = AppServer(self._database_connector)
-        self.thread = Thread(target = self.threaded_function, args = (10, ))   
+        self._api_server = ApiServer(self._database_connector)
+        #self._mqtt = ApiServer(self._database_connector)
+        
+    async def run(self):
+        tornado_task = asyncio.create_task(self._api_server.run())
+        #mqtt_task = asyncio.create_task(self.start_mqtt_client())
 
-    def threaded_function(self, args):
-        self.m_Server.run()
+        try:
+            await asyncio.gather(tornado_task) #mqtt_task)
+        except asyncio.CancelledError:
+            print("Shutting down...")
+            await self.stop()
     
-    def run(self):
-        self.thread.start()
-
-    async def join(self):
-        await asyncio.Event().wait()
-
-class AppServer:
-    def __init__(self, database_connector: DatabaseConnector):
-        self._database_connector = database_connector
-        self.app = self.make_app()       
-
-    def run(self):
-        self.value = 10
-        self.app.listen(8888)  # Listen on port 8888
-        print("Server is running on http://localhost:8888")
-        tornado.ioloop.PeriodicCallback(self.send_test_messages, 200).start()
-        tornado.ioloop.IOLoop.current().start()
-
-    def send_test_messages(self):
-        self._middleware.run_middleware_update()
-
-    def make_app(self):
-        base_dir = os.path.dirname(__file__)  # Current directory of the server script
-        angular_dist = os.path.join(base_dir, "../webApp")
-        return tornado.web.Application([
-           # (r"/", Visualization),
-           # (r"/websocket", VisualizationWebSocketHandler, {'middleware': self._middleware}),
-            (r"/test", ServerHandler),
-            (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})
-        ],
-        static_path="C:/Titanium/TitaniumServer/web/titanium-server/dist/titanium-server")
+    async def stop(self):
+        """Stop Tornado and MQTT services."""
+        if self._api_server:
+            self._api_server.stop()
+            print("API server stopped.")
+        if self.mqtt_client:
+            await self.mqtt_client.disconnect()
+            print("MQTT client disconnected.")
     

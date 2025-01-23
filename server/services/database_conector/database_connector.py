@@ -18,7 +18,7 @@ class DatabaseConnector:
         conn = await aiosqlite.connect(DB_NAME)
         cursor = await conn.cursor()
 
-        self._config_models = {}
+        self._config_models: dict[str, DatabaseConfigModel] = {}
 
         script_directory = os.path.dirname(os.path.abspath(__file__))
         filename = os.path.join(script_directory, DB_CONFIG)
@@ -33,7 +33,7 @@ class DatabaseConnector:
                     await cursor.execute(databaseConfig.createCommand) 
 
                 await conn.commit()
-                conn.close()
+                await conn.close()
             except json.JSONDecodeError as e:
                 print(f"Error processing file {filename}: {e}")
 
@@ -51,7 +51,8 @@ class DatabaseConnector:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, tuple(model_obj.values()))
                 await conn.commit()
-                return cursor.lastrowid
+                last = cursor.lastrowid
+                return last
     
     async def find_info_from_table(self, table_name, conditions: dict[str, str] = None):
         query = f"SELECT * FROM {table_name}"
@@ -65,7 +66,19 @@ class DatabaseConnector:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, values)
-                return await cursor.fetchall()
+
+                query_result: list[ModelInterface] = await cursor.fetchall()
+                columns = [description[0] for description in cursor.description]
+                model_constructor: ModelInterface = self._config_models[table_name].model
+
+                list_of_models = []
+                for row in query_result:
+                    model = model_constructor()
+                    model.setModelObject(dict(zip(columns, row)))
+                    list_of_models.append( model )
+
+                return list_of_models
+                    
 
     
     async def remove_info_from_table(self, table_name, id):
@@ -74,5 +87,6 @@ class DatabaseConnector:
             async with conn.cursor() as cursor:
                 await cursor.execute(query, (id,))
                 await conn.commit()
-                return cursor.rowcount
+                count = cursor.rowcount
+                return count
        
