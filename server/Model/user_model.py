@@ -15,6 +15,7 @@ class User(ModelInterface):
     _phone_number: str
     _passwd_hash: str
     _type: TypeOfUser
+    _rfid: str
 
     def __init__(self):
         self._name = None
@@ -22,13 +23,18 @@ class User(ModelInterface):
         self._email = ""
         self._phone_number = ""
         self._type = TypeOfUser.Unknow
+        self._rfid = None
 
-    def initialize(self, name: str, email: str, phone_number:str, type_of_user: TypeOfUser, password: str):
+    def initialize(self, name: str, email: str, phone_number:str, type_of_user: TypeOfUser, password: str, rfid: str):
         self._name = name
         self._email = email
         self._phone_number = phone_number
         self._type = TypeOfUser(type_of_user)
         self._passwd_hash = self.hash_password(password)
+        self._rfid = rfid
+
+    def set_rfid(self, rfid: str):
+        self._rfid = rfid
     
     def getCollectionName(self) -> str:
         return "Users"
@@ -40,6 +46,7 @@ class User(ModelInterface):
         model["PhoneNumber"] = self._phone_number
         model["Type"] = self._type.value
         model["HashedPassword"] = self._passwd_hash
+        model["Rfid"] = self._rfid
         return model
 
     def setModelObject(self, model_gen_object: dict[str, object]):
@@ -49,6 +56,7 @@ class User(ModelInterface):
         self._phone_number = model_gen_object["PhoneNumber"]
         self._type = TypeOfUser(model_gen_object["Type"])
         self._passwd_hash = model_gen_object["HashedPassword"]
+        self._rfid = model_gen_object["Rfid"]
     
     def toStr(self) -> str:
         json = {
@@ -56,10 +64,14 @@ class User(ModelInterface):
             "Name": self._name,
             "Email": self._email,
             "PhoneNumber": self._phone_number,
-            "Type": self._type.value
+            "Type": self._type.value,
+            "Rfid": self._rfid
         }
 
         return str(json)
+    
+    def __str__(self):
+        return self.toStr()
 
     def hash_password(self, password):
         # Convert username and password to bytes

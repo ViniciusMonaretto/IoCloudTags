@@ -2,7 +2,7 @@
     "TableConfigs":[
         {
             "name": "Users",
-            "createCommand": "CREATE TABLE IF NOT EXISTS 'Users' (id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT UNIQUE NOT NULL,Email TEXT, PhoneNumber TEXT, Type NUMBER, HashedPassword TEXT NOT NULL)",
+            "createCommand": "CREATE TABLE IF NOT EXISTS 'Users' (id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT UNIQUE NOT NULL,Email TEXT, PhoneNumber TEXT, Rfid TEXT UNIQUE, Type NUMBER, HashedPassword TEXT NOT NULL)",
             "addCommand": "INSERT INTO 'Users' (Name, Email, PhoneNumber, Type) VALUES (?, ?, ?, ?)",
             "getCommand": "SELECT * FROM 'Users'",
             "deleteCommand": "DELETE FROM 'Users' WHERE id = ?"

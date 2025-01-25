@@ -8,6 +8,28 @@ import json
 from services.database_conector.database_connector import DatabaseConnector
 from Model.user_model import User
 
+class RfidSet(tornado.web.RequestHandler):
+    def initialize(self, database: DatabaseConnector):
+        self._database_connector = database
+
+    async def post(self):
+        self.set_header("Content-Type", "application/json")
+        body = json.loads(self.request.body)
+        condition = {"id": body["id"]} if body["id"] and body["id"]!="all" else None
+        users = await self._database_connector.find_info_from_table("Users", condition)
+        if len(users) == 0:
+            self.set_status(500)
+            self.write("User not found")   
+            return 
+    
+        user = users[0]
+
+        user.set_rfid(body["Rfid"])
+
+        await self._database_connector.update_table_model(user, ["Rfid"])
+
+        self.write(str([str(user) for user in users]))
+
 class UserHandler(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
@@ -27,7 +49,8 @@ class UserHandler(tornado.web.RequestHandler):
                             new_user_model["Email"], 
                             new_user_model["PhoneNumber"],
                             new_user_model["Type"],
-                            new_user_model["Password"])
+                            new_user_model["Password"],
+                            None)
             id = await self._database_connector.add_info_to_table(user)
             self.write(str(id))
         except json.JSONDecodeError:
@@ -65,6 +88,7 @@ class ApiServer:
            # (r"/", Visualization),
            # (r"/websocket", VisualizationWebSocketHandler, {'middleware': self._middleware}),
             (r"/user", UserHandler, {'database': self._database_connector}),
+            (r"/user/rfid", RfidSet, {'database': self._database_connector}),
             (r"/user/all", UserHandler, {'database': self._database_connector}),
             (r"/user/(\d+)", UserHandler, {'database': self._database_connector}),
             (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})

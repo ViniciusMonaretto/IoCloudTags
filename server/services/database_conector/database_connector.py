@@ -54,6 +54,35 @@ class DatabaseConnector:
                 last = cursor.lastrowid
                 return last
     
+    async def update_table_model(self, model: ModelInterface, keys_to_change: list[str]):
+        conn = await aiosqlite.connect(DB_NAME)
+        cursor = await conn.cursor()
+
+        model_obj = model.getModelObject()
+
+        columns = ""
+
+        values = []
+        length = len(keys_to_change)
+        count = 0
+        for key in keys_to_change:
+            columns += key
+            columns += " = ?"
+            if length > count + 1:
+                columns += ", "
+            count+=1
+
+            values.append(model_obj[key])
+
+        query = f"UPDATE {model.getCollectionName()} SET {columns} WHERE id = ?"
+        
+        values.append(model._id)
+        async with aiosqlite.connect(DB_NAME) as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute(query, tuple(values))
+                await conn.commit()
+                return True
+    
     async def find_info_from_table(self, table_name, conditions: dict[str, str] = None):
         query = f"SELECT * FROM {table_name}"
         values = []
