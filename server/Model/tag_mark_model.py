@@ -26,7 +26,7 @@ class TagMark(ModelInterface):
         model = {}
         model["UserId"] = self._user_id
         model["Location"] = self._location 
-        model["Timestamp"] = self._location 
+        model["Timestamp"] = self._timestamp 
 
         return model
 
