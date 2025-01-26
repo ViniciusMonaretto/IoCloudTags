@@ -79,7 +79,7 @@ class DatabaseConnector:
                 await conn.commit()
                 return True
     
-    async def find_info_from_table(self, table_name, conditions: dict[str, str] = None):
+    async def find_info_from_table(self, table_name, conditions: dict[str, str] = None) -> list[ModelInterface]:
         query = f"SELECT * FROM {table_name}"
         values = []
 
