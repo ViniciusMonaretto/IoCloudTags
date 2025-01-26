@@ -14,15 +14,15 @@ class TagMarkHandler(tornado.web.RequestHandler):
     async def get(self, user_id=None):
         self.set_header("Content-Type", "application/json")
         condition = {"UserId": user_id} if user_id and user_id!="all" else None
-        users = await self._database_connector.find_info_from_table("TagMarks", condition)
-        self.write(str([str(user) for user in users]))
+        markings = await self._database_connector.find_info_from_table("TagMarks", condition)
+        self.write(str([str(mark) for mark in markings]))
 
     async def post(self):
         # Parse JSON body to create a new user
         try:
             new_mark_info = json.loads(self.request.body)
             user = await self._database_connector.find_info_from_table("Users", {"id": new_mark_info["UserId"]})
-            if not user:
+            if len(user) != 1:
                 self.set_status(500)
                 self.write("User not found")
                 return 
@@ -30,7 +30,7 @@ class TagMarkHandler(tornado.web.RequestHandler):
             time = datetime.strptime(new_mark_info["Timestamp"], "%Y-%m-%d %H:%M:%S")
 
             new_mark = TagMark()
-            new_mark.initialize(new_mark_info["Location"], user, time)
+            new_mark.initialize(new_mark_info["Location"], user[0], time)
 
             id = await self._database_connector.add_info_to_table(new_mark)
             self.write(str(id))

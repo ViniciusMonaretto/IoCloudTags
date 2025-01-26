@@ -31,6 +31,7 @@ class TagMark(ModelInterface):
         return model
 
     def setModelObject(self, model_gen_object: dict[str, object]):
+        self._id = model_gen_object["id"]
         self._user_id = model_gen_object["UserId"]
         self._location = model_gen_object["Location"]
         self._timestamp = model_gen_object["Timestamp"]
