@@ -8,6 +8,7 @@ import json
 from services.database_conector.database_connector import DatabaseConnector
 from .handler.user_api_handler import UserChange, UserHandler
 from .handler.marking_api_handler import TagMarkHandler
+from .handler.location_api_handler import LocationHandler
 
 
 class ApiServer:
@@ -29,8 +30,10 @@ class ApiServer:
         base_dir = os.path.dirname(__file__)  # Current directory of the server script
         angular_dist = os.path.join(base_dir, "../webApp")
         return tornado.web.Application([
-           # (r"/", Visualization),
+           # (r"/", Visualization),LocationHandler
            # (r"/websocket", VisualizationWebSocketHandler, {'middleware': self._middleware}),
+            (r"/location", LocationHandler, {'database': self._database_connector}),
+            (r"/location/(\d+)", LocationHandler, {'database': self._database_connector}),
             (r"/tagmark", TagMarkHandler, {'database': self._database_connector}),
             (r"/tagmark/(\d+)", TagMarkHandler, {'database': self._database_connector}),
             (r"/user", UserHandler, {'database': self._database_connector}),

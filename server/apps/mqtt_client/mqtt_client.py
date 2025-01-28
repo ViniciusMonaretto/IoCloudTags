@@ -38,11 +38,17 @@ class IoCLoudMqttCLient:
         if len(user_query) == 0:
             return
         
+        location_query = await self._database_connector.find_info_from_table("Locations", {"GatewayUuid": id})
+        if len(location_query) != 1:
+            self.set_status(500)
+            self.write("Location not found")
+            return 
+        
         user = user_query[0]
         time = datetime.fromisoformat(payload["timestamp"])
 
         tag_mark = TagMark()
-        tag_mark.initialize(payload['location'], user, time)
+        tag_mark.initialize(location_query[0]._id, user, time)
         await self._database_connector.add_info_to_table(tag_mark)
         
 

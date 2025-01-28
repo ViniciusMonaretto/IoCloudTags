@@ -26,11 +26,17 @@ class TagMarkHandler(tornado.web.RequestHandler):
                 self.set_status(500)
                 self.write("User not found")
                 return 
+
+            location = await self._database_connector.find_info_from_table("Locations", {"id": new_mark_info["LocationId"]})
+            if len(location) != 1:
+                self.set_status(500)
+                self.write("Location not found")
+                return 
             
             time = datetime.strptime(new_mark_info["Timestamp"], "%Y-%m-%d %H:%M:%S")
 
             new_mark = TagMark()
-            new_mark.initialize(new_mark_info["Location"], user[0], time)
+            new_mark.initialize(location[0]._id, user[0], time)
 
             id = await self._database_connector.add_info_to_table(new_mark)
             self.write(str(id))

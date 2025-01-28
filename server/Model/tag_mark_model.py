@@ -5,17 +5,17 @@ from datetime import datetime
 
     
 class TagMark(ModelInterface):
-    _location: str
+    _location_id: int
     _user_id: int
     _timestamp: datetime
 
     def __init__(self):
-        self._location = ""
+        self._location_id = None
         self._user_id = None
         self._timestamp = None
 
-    def initialize(self, location: str, user: User, timestamp: datetime):
-        self._location = location
+    def initialize(self, location: int, user: User, timestamp: datetime):
+        self._location_id = location
         self._user_id = user._id
         self._timestamp = timestamp
     
@@ -25,7 +25,7 @@ class TagMark(ModelInterface):
     def getModelObject(self) -> dict[str, object]:
         model = {}
         model["UserId"] = self._user_id
-        model["Location"] = self._location 
+        model["LocationId"] = self._location_id 
         model["Timestamp"] = self._timestamp 
 
         return model
@@ -33,14 +33,14 @@ class TagMark(ModelInterface):
     def setModelObject(self, model_gen_object: dict[str, object]):
         self._id = model_gen_object["id"]
         self._user_id = model_gen_object["UserId"]
-        self._location = model_gen_object["Location"]
+        self._location_id = model_gen_object["LocationId"]
         self._timestamp = model_gen_object["Timestamp"]
     
     def toStr(self) -> str:
         json = {
             "id": self._id,
             "UserId": self._user_id,
-            "Location": self._location,
+            "LocationId": self._location_id,
             "Timestamp": str(self._timestamp)
         }
 
