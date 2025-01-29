@@ -31,13 +31,12 @@ client.loop_start()
 try:
     while True:
         # Generate a random temperature value
-        temperature = round(random.uniform(20.0, 30.0), 2)  # Random float between 20.0 and 30.0
+        # temperature = round(random.uniform(20.0, 30.0), 2)  # Random float between 20.0 and 30.0
         # Get the current timestamp
-        timestamp = datetime.utcnow().isoformat()  # ISO 8601 UTC format
+        timestamp = datetime.now().isoformat()  # ISO 8601 UTC format
         # Create a JSON payload
         payload = {
             "rfid": "12555",
-            "location": "Bagé",
             "timestamp": timestamp
         }
         # Convert the payload to a JSON string
@@ -45,9 +44,10 @@ try:
         # Publish the JSON payload to the topic
         client.publish(TOPIC, payload_json)
         print(f"Published: {payload_json} to topic {TOPIC}")
-        time.sleep(30)  # Wait for 5 seconds before sending the next message
+        time.sleep(2)  # Wait for 5 seconds before sending the next message
         break
 except KeyboardInterrupt:
     print("Stopping the client.")
+finally:
     client.loop_stop()  # Stop the loop
     client.disconnect()  # Disconnect from the broker
