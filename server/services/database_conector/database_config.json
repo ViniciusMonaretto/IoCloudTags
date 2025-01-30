@@ -11,6 +11,10 @@
         {
             "name": "Locations",
             "createCommand": "CREATE TABLE IF NOT EXISTS Locations (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, Block INTEGER NOT NULL, Sector INTEGER NOT NULL, GatewayUuid TEXT UNIQUE);"
+        },
+        {
+            "name": "EventModels",
+            "createCommand": "CREATE TABLE IF NOT EXISTS EventModels (id INTEGER PRIMARY KEY AUTOINCREMENT, UserId INTEGER NOT NULL, LocationId INTEGER NOT NULL, BeginDate DATETIME NOT NULL, EndDate DATETIME NOT NULL, FOREIGN KEY (UserId) REFERENCES Users (id), FOREIGN KEY (LocationId) REFERENCES Locations (id));"
         }
        
     ]

@@ -9,6 +9,7 @@ from services.database_conector.database_connector import DatabaseConnector
 from .handler.user_api_handler import UserChange, UserHandler
 from .handler.marking_api_handler import TagMarkHandler
 from .handler.location_api_handler import LocationHandler
+from .handler.event_api_handler import EventApiHandler
 
 
 class ApiServer:
@@ -40,5 +41,6 @@ class ApiServer:
             (r"/user/change", UserChange, {'database': self._database_connector}),
             (r"/user/all", UserHandler, {'database': self._database_connector}),
             (r"/user/(\d+)", UserHandler, {'database': self._database_connector}),
+            (r"/event", EventApiHandler, {'database': self._database_connector}),
             (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})
         ])
