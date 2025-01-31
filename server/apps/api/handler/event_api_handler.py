@@ -54,7 +54,13 @@ class EventApiHandler(tornado.web.RequestHandler):
     async def delete(self, marking_id):
         # Parse JSON body to create a new user
         try:
+            event_list: list[EventModel] = await self._database_connector.find_info_from_table("EventModels", {"id": marking_id})
+            if len(event_list) == 0:
+                self.write("not found")
+                return
+            
             id = await self._database_connector.remove_info_from_table("EventModels", marking_id)
+            await self._event_schedule.check_event_for_user(event_list[0]._user_id)
             self.write("Sucess")
         except json.JSONDecodeError:
             self.set_status(400)

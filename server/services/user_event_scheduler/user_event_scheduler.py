@@ -22,13 +22,14 @@ class UserEventScheduler:
         current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         event_list = await self._database_conector.find_info_from_table("EventModels", {"UserId": user_id}, {"BeginDate": current_date}, ["BeginDate"], 1)
         if(len(event_list) == 0):
-            return
-        
-        event: EventModel = event_list[0]
-        await self.add_user_event(user_id, datetime.strptime(event._begin_date, "%Y-%m-%d %H:%M:%S"), prt)
+            await self.cancel_user_events(user_id)    
+        else:
+            event: EventModel = event_list[0]
+            await self.add_user_event(user_id, datetime.strptime(event._begin_date, "%Y-%m-%d %H:%M:%S"), prt)
 
-    async def add_user_event(self, user_id, event_time, callback, *args, **kwargs):
+    async def add_user_event(self, user_id, event: EventModel, callback, *args, **kwargs):
         now = datetime.now()
+        event_time = event._begin_date
         delay = (event_time - now).total_seconds()
 
         if delay <= 0:
@@ -47,7 +48,7 @@ class UserEventScheduler:
 
             # Schedule the new event
             task = asyncio.create_task(self._schedule_event(user_id, delay, callback, *args, **kwargs))
-            self.user_events[user_id] = (task, event_time)
+            self.user_events[user_id] = (task, event_time, event)
             print(f"Scheduled new event for user {user_id} at {event_time}") 
 
     async def _schedule_event(self, user_id, delay, callback, *args, **kwargs):
