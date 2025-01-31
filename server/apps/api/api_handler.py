@@ -6,6 +6,7 @@ import asyncio
 import json
 
 from services.database_conector.database_connector import DatabaseConnector
+from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from .handler.user_api_handler import UserChange, UserHandler
 from .handler.marking_api_handler import TagMarkHandler
 from .handler.location_api_handler import LocationHandler
@@ -13,9 +14,10 @@ from .handler.event_api_handler import EventApiHandler
 
 
 class ApiServer:
-    def __init__(self, database_connector: DatabaseConnector):
+    def __init__(self, database_connector: DatabaseConnector,  user_scheduler: UserEventScheduler):
         tornado.platform.asyncio.AsyncIOMainLoop().install()
         self._database_connector = database_connector
+        self._user_scheduler = user_scheduler
         self._app = self.make_app()       
 
     async def run(self):
@@ -41,6 +43,6 @@ class ApiServer:
             (r"/user/change", UserChange, {'database': self._database_connector}),
             (r"/user/all", UserHandler, {'database': self._database_connector}),
             (r"/user/(\d+)", UserHandler, {'database': self._database_connector}),
-            (r"/event", EventApiHandler, {'database': self._database_connector}),
+            (r"/event", EventApiHandler, {'database': self._database_connector, 'userSchedule': self._user_scheduler}),
             (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})
         ])

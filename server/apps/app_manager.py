@@ -1,15 +1,18 @@
 import asyncio
 from time import sleep
 from services.database_conector.database_connector import DatabaseConnector
+from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from .api.api_handler import ApiServer
 from .mqtt_client.mqtt_client import IoCLoudMqttCLient
 
 
 class AppManager:
-    def __init__(self, database_connector: DatabaseConnector):
+    def __init__(self, database_connector: DatabaseConnector, user_scheduler: UserEventScheduler):
         self._database_connector = database_connector
-        self._api_server = ApiServer(self._database_connector)
+        self._user_scheduler = user_scheduler
+        self._api_server = ApiServer(self._database_connector, self._user_scheduler)
         self._mqtt_client = IoCLoudMqttCLient(self._database_connector)
+        
         #self._mqtt = ApiServer(self._database_connector)
         
     async def run(self):

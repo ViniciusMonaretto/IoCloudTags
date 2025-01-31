@@ -79,14 +79,35 @@ class DatabaseConnector:
                 await conn.commit()
                 return True
     
-    async def find_info_from_table(self, table_name, conditions: dict[str, str] = None) -> list[ModelInterface]:
+    async def find_info_from_table(self, table_name, 
+                                   conditions: dict[str, str] = None,
+                                   bigger_then_conditions: dict[str, str] = None, 
+                                   order_by_condition: list[str] = None, 
+                                   limit: int = None) -> list[ModelInterface]:
         query = f"SELECT * FROM {table_name}"
         values = []
 
         if conditions:
             where_clause = " AND ".join([f"{col} = ?" for col in conditions.keys()])
-            query += f" WHERE {where_clause}"
             values = list(conditions.values())
+            query += f" WHERE {where_clause}"
+
+           
+        
+        if bigger_then_conditions:
+            bigger_then_clause = " AND ".join([f"{key} > ?" for key in bigger_then_conditions.keys()])
+            values += bigger_then_conditions.values()
+
+            if conditions:
+                query += f" AND {bigger_then_clause}"
+            
+        
+        if order_by_condition:
+            order_by_clause = " ,".join([f"{col}" for col in order_by_condition])
+            query += f" ORDER BY {order_by_clause} DESC"
+
+        if limit:
+            query += f" LIMIT {limit};"
 
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
@@ -103,8 +124,7 @@ class DatabaseConnector:
                     list_of_models.append( model )
 
                 return list_of_models
-                    
-
+    
     
     async def remove_info_from_table(self, table_name, id):
         query = f"DELETE FROM {table_name} WHERE id = ?"

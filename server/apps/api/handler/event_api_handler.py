@@ -5,18 +5,20 @@ import tornado.web
 from datetime import datetime
 
 from services.database_conector.database_connector import DatabaseConnector
+from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from Model.event_model import EventModel
 
 class EventApiHandler(tornado.web.RequestHandler):
-    def initialize(self, database: DatabaseConnector):
+    def initialize(self, database: DatabaseConnector, userSchedule: UserEventScheduler):
         self._database_connector = database
+        self._event_schedule = userSchedule
 
     async def getAllEvents(self, conditions):
         return await self._database_connector.find_info_from_table("EventModels", conditions)
 
     async def get(self):
         self.set_header("Content-Type", "application/json")
-        event_info = json.loads(self.request.body)
+        event_info = json.loads(self.request.body.count() > 0) if self.request.body else None
         events = await self._database_connector.find_info_from_table("EventModels", event_info)
         self.write(str([str(evt) for evt in events]))
 
@@ -42,6 +44,8 @@ class EventApiHandler(tornado.web.RequestHandler):
             evt.initialize(location[0], user[0], begin_date, end_date)
 
             id = await self._database_connector.add_info_to_table(evt)
+
+            await self._event_schedule.check_event_for_user(user[0]._id)
             self.write(str(id))
         except json.JSONDecodeError:
             self.set_status(400)

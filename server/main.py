@@ -11,14 +11,18 @@ async def main():
     dat = DatabaseConnector("")
     await dat.init_service()
 
-    app_manager = AppManager(dat)
-    user_scheduler = UserEventScheduler()
+    user_scheduler = UserEventScheduler(dat)
+    await user_scheduler.init_scheduler()
 
-    now = datetime.now()
-
-    user_scheduler.add_user_event(1, now + timedelta(seconds=20), prt)
+    app_manager = AppManager(dat, user_scheduler)
 
     await app_manager.run()
+
+    # now = datetime.now()
+
+    # user_scheduler.add_user_event(1, now + timedelta(seconds=20), prt)
+
+    # 
 
     # user = User("Joaquim Barbosa", "joaquim@gmail.com", "5199999999", TypeOfUser.Guard, "teste")
 
