@@ -1,7 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta
 from ..database_conector.database_connector import DatabaseConnector
-from Model.event_model import EventModel
+from src.Model.event_model import EventModel
 
 def prt(user_id = 1, message = ""):
     print(f"Event triggered for user {user_id}: {message}")
@@ -72,7 +72,7 @@ class UserEventScheduler:
     async def cancel_user_events(self, user_id):
         async with self._lock:
             if user_id in self.user_events:
-                existing_task, _ = self.user_events[user_id]
+                existing_task, _, _ = self.user_events[user_id]
                 existing_task.cancel()
                 del self.user_events[user_id]
                 print(f"Canceled event for user {user_id}")

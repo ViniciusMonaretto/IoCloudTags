@@ -5,8 +5,8 @@ import os
 import asyncio
 import json
 
-from services.database_conector.database_connector import DatabaseConnector
-from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from .handler.user_api_handler import UserChange, UserHandler
 from .handler.marking_api_handler import TagMarkHandler
 from .handler.location_api_handler import LocationHandler

@@ -4,9 +4,9 @@ import asyncio
 from datetime import datetime
 import json
 
-from services.database_conector.database_connector import DatabaseConnector
+from src.services.database_conector.database_connector import DatabaseConnector
 
-from Model.tag_mark_model import TagMark
+from src.Model.tag_mark_model import TagMark
 
 
 SUBSCRIBE_TOPIC = "/ioCLoud/#"

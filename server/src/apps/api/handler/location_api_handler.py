@@ -4,8 +4,8 @@ import tornado.web
 
 from datetime import datetime
 
-from services.database_conector.database_connector import DatabaseConnector
-from Model.location_model import Location
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.Model.location_model import Location
 
 class LocationHandler(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):

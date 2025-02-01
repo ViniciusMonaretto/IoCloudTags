@@ -2,8 +2,8 @@ import json
 import tornado.ioloop
 import tornado.web
 
-from services.database_conector.database_connector import DatabaseConnector
-from Model.user_model import User
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.Model.user_model import User
 
 class UserChange(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):

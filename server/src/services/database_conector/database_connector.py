@@ -4,7 +4,7 @@ import json
 import typing
 
 from .database_config_model import DatabaseConfigModel
-from Model.model_interface import ModelInterface
+from src.Model.model_interface import ModelInterface
 
 DB_NAME = "IoCloudDatabank.db"
 DB_CONFIG = "database_config.json"

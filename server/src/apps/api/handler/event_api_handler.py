@@ -4,9 +4,9 @@ import tornado.web
 
 from datetime import datetime
 
-from services.database_conector.database_connector import DatabaseConnector
-from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
-from Model.event_model import EventModel
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
+from src.Model.event_model import EventModel
 
 class EventApiHandler(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector, userSchedule: UserEventScheduler):

@@ -1,7 +1,7 @@
-from services.database_conector.database_connector import DatabaseConnector
-from Model.user_model import User, TypeOfUser
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.Model.user_model import User, TypeOfUser
 from apps.app_manager import AppManager
-from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
+from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 import asyncio
 from datetime import datetime, timedelta
 

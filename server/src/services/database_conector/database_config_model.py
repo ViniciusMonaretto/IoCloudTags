@@ -1,9 +1,9 @@
-from Model.user_model import User
-from Model.tag_mark_model import TagMark
-from Model.location_model import Location
-from Model.event_model import EventModel
+from src.Model.user_model import User
+from src.Model.tag_mark_model import TagMark
+from src.Model.location_model import Location
+from src.Model.event_model import EventModel
 
-from Model.model_interface import ModelInterface
+from src.Model.model_interface import ModelInterface
 
 class DatabaseConfigModel:
     def __init__(self, jsonConfig: object):

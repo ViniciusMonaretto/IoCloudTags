@@ -3,3 +3,5 @@ bcrypt
 aiosqlite
 paho-mqtt==1.6.1
 asyncio-mqtt
+pytest
+pytest-asyncio

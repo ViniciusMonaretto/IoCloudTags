@@ -1,7 +1,7 @@
 import asyncio
 from time import sleep
-from services.database_conector.database_connector import DatabaseConnector
-from services.user_event_scheduler.user_event_scheduler import UserEventScheduler
+from src.services.database_conector.database_connector import DatabaseConnector
+from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from .api.api_handler import ApiServer
 from .mqtt_client.mqtt_client import IoCLoudMqttCLient
 
@@ -27,7 +27,7 @@ class AppManager:
             await self.stop()
     
     async def stop(self):
-        """Stop Tornado and MQTT services."""
+        """Stop Tornado and MQTT src.services."""
         if self._api_server:
             self._api_server.stop()
             print("API server stopped.")
