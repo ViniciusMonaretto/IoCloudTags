@@ -32,6 +32,6 @@ class AppManager:
             self._api_server.stop()
             print("API server stopped.")
         if self._mqtt_client:
-            await self._mqtt_client.stop()
+            self._mqtt_client.stop()
             print("MQTT client disconnected.")
     

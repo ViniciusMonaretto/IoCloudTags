@@ -22,8 +22,6 @@ async def main():
 
     # user_scheduler.add_user_event(1, now + timedelta(seconds=20), prt)
 
-    # 
-
     # user = User("Joaquim Barbosa", "joaquim@gmail.com", "5199999999", TypeOfUser.Guard, "teste")
 
     # print(user.verify_password("teste"))

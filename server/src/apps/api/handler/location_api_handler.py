@@ -31,7 +31,7 @@ class LocationHandler(tornado.web.RequestHandler):
 
             else:
                 location = Location()
-                location.initialize(new_location_info["Name"], new_location_info["Block"], new_location_info["Sector"], new_location_info["Uuid"])
+                location.initialize(new_location_info["Name"], new_location_info["Block"], new_location_info["Sector"], new_location_info["Uuid"], new_location_info["AdminUserId"])
                 id = await self._database_connector.add_info_to_table(location)
                 self.write(str(id))
 

@@ -10,7 +10,7 @@
         },
         {
             "name": "Locations",
-            "createCommand": "CREATE TABLE IF NOT EXISTS Locations (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, Block INTEGER NOT NULL, Sector INTEGER NOT NULL, GatewayUuid TEXT UNIQUE);"
+            "createCommand": "CREATE TABLE IF NOT EXISTS Locations (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, Block INTEGER NOT NULL, Sector INTEGER NOT NULL, GatewayUuid TEXT UNIQUE, AdminUserId INTEGER,  FOREIGN KEY (AdminUserId) REFERENCES Users (id));"
         },
         {
             "name": "EventModels",
