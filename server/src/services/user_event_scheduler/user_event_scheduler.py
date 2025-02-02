@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timedelta
 from ..database_conector.database_connector import DatabaseConnector
 from src.Model.event_model import EventModel
+from src.Model.location_model import Location
 
 def prt(user_id = 1, message = ""):
     print(f"Event triggered for user {user_id}: {message}")
@@ -25,11 +26,16 @@ class UserEventScheduler:
             await self.cancel_user_events(user_id)    
         else:
             event: EventModel = event_list[0]
-            await self.add_user_event(user_id, datetime.strptime(event._begin_date, "%Y-%m-%d %H:%M:%S"), prt)
 
-    async def add_user_event(self, user_id, event: EventModel, callback, *args, **kwargs):
+            keeper_time = event._begin_date - timedelta(hours=24)
+            await self.add_user_event(user_id, event, keeper_time, prt)
+            
+            location: list[Location] = await self._database_conector.find_info_from_table("Locations", {"id": event._location_id})
+            admin_time = event._begin_date + timedelta(hours=1)
+            await self.add_user_event(location[0]._admin_user_id, event, admin_time, prt)
+
+    async def add_user_event(self, user_id, event: EventModel, event_time, callback, *args, **kwargs):
         now = datetime.now()
-        event_time = event._begin_date
         delay = (event_time - now).total_seconds()
 
         if delay <= 0:
