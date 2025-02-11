@@ -1,15 +1,19 @@
 from twilio.rest import Client
+import os
+
+ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 
 class TwilioWhatsAppSender:
     """Send messages using Twilio WhatsApp API"""
 
-    def __init__(self, account_sid, auth_token, twilio_whatsapp_number):
+    def __init__(self, twilio_whatsapp_number):
         """
         :param account_sid: Twilio Account SID
         :param auth_token: Twilio Auth Token
         :param twilio_whatsapp_number: Twilio WhatsApp sender number (e.g., "whatsapp:+14155238886")
         """
-        self.client = Client(account_sid, auth_token)
+        self.client = Client(ACCOUNT_SID, AUTH_TOKEN)
         self.twilio_whatsapp_number = twilio_whatsapp_number
 
     def send_message(self, recipient_number, message):

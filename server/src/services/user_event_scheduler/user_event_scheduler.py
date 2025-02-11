@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from ..database_conector.database_connector import DatabaseConnector
 from src.Model.event_model import EventModel
 from src.Model.location_model import Location
+from whatsapp_sender import TwilioWhatsAppSender
 
 def prt(user_id = 1, message = ""):
     print(f"Event triggered for user {user_id}: {message}")

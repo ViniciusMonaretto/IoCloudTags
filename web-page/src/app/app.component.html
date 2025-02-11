@@ -1,0 +1,26 @@
+<div class="window-class">
+
+    <mat-drawer-container style="background-color: #e6e1e1;" class="window-container">
+        <mat-drawer opened="true" #drawer mode="side">
+            <app-navbar></app-navbar>
+        </mat-drawer>
+        <mat-toolbar style="height: 5%; background-color: #e6e1e1;" >
+            <span>IoCloud Dashboard</span>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+                <mat-icon>share</mat-icon>
+            </button>
+        </mat-toolbar>
+        <div style="background-color: #e6e1e1; height: 95%;">
+            <div class="router-div">
+                <router-outlet></router-outlet>
+            </div>
+            
+        </div>
+        
+
+    </mat-drawer-container>
+</div>
