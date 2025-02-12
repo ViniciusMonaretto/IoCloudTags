@@ -1,14 +1,14 @@
 #!/bin/sh
 
-cd ./web/webApp
+cd ./web-page
 
-echo "BUild angular app"
+echo "Build angular app"
 
 ng build
 
-cd ../../server
+cd ../server/src
 
 rm -rf ./webApp
 mkdir ./webApp
 
-cp ../web/webApp/dist/web-app/* ./webApp
+cp ../../web-page/dist/web-page/* ./webApp

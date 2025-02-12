@@ -12,6 +12,8 @@ from .handler.marking_api_handler import TagMarkHandler
 from .handler.location_api_handler import LocationHandler
 from .handler.event_api_handler import EventApiHandler
 
+from .visualization.visualization_manager import Visualization
+
 
 class ApiServer:
     def __init__(self, database_connector: DatabaseConnector,  user_scheduler: UserEventScheduler):
@@ -31,9 +33,9 @@ class ApiServer:
 
     def make_app(self):
         base_dir = os.path.dirname(__file__)  # Current directory of the server script
-        angular_dist = os.path.join(base_dir, "../webApp")
+        angular_dist = os.path.join(base_dir, "../../webApp")
         return tornado.web.Application([
-           # (r"/", Visualization),LocationHandler
+            (r"/", Visualization),
            # (r"/websocket", VisualizationWebSocketHandler, {'middleware': self._middleware}),
             (r"/location", LocationHandler, {'database': self._database_connector}),
             (r"/location/(\d+)", LocationHandler, {'database': self._database_connector}),
