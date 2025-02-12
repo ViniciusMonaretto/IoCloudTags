@@ -4,12 +4,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MainScreenComponent } from 'src/panels/main-screen/main-screen.component';
 import { NavbarComponent } from 'src/panels/navbar/navbar.component';
+import { UserPageComponent } from 'src/panels/user-page/user-page.component'
 
 //selfmade components
 import { SideNavOptionComponent } from 'src/components/side-nav-option/side-nav-option.component';
+import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-table.component'
 
 //Angular Material
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -29,12 +32,17 @@ import {MatTableModule} from '@angular/material/table';
     AppComponent,
     MainScreenComponent,
     NavbarComponent,
-    SideNavOptionComponent
+    UserPageComponent,
+
+    SideNavOptionComponent,
+    IoCloudTableComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     MatSidenavModule,
     MatToolbarModule,

@@ -8,6 +8,11 @@ from src.Model.user_model import User
 class UserChange(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
+    
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")  # Allow all origins
+        self.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")  # Allow specific methods
+        self.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")  # Allow specific headers
 
     async def post(self):
         self.set_header("Content-Type", "application/json")
@@ -28,6 +33,11 @@ class UserChange(tornado.web.RequestHandler):
 class UserHandler(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
+    
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")  # Allow all origins
+        self.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")  # Allow specific methods
+        self.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")  # Allow specific headers
 
     async def get(self, user_id=None):
         self.set_header("Content-Type", "application/json")
