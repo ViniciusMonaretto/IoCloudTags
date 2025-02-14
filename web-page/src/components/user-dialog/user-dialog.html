@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Add new Sensor</h2>
+<mat-dialog-content style="display: flex; flex-direction: column;">
+  <mat-form-field appearance="fill">
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]=" userModule.Name" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]=" userModule.Password" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]=" userModule.Email" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Phone Number</mat-label>
+    <input matInput [(ngModel)]="userModule.PhoneNumber" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Rfid</mat-label>
+    <input matInput [(ngModel)]="userModule.Rfid" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Type</mat-label>
+    <mat-select  [(ngModel)]="userModule.Type">
+      <mat-option  *ngFor="let usertp of userTypes" [value]="usertp">{{usertp}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+</mat-dialog-content>
+<mat-dialog-actions> 
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [disabled]="!validForm()" (click)="onAddCLick()" cdkFocusInitial>Add</button>
+</mat-dialog-actions>

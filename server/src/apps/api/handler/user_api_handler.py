@@ -34,6 +34,13 @@ class UserHandler(tornado.web.RequestHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
     
+    def options(self, *args, **kwargs):
+        self.set_header("Access-Control-Allow-Origin", "*")  # Allow all origins, or specify allowed origins
+        self.set_header("Access-Control-Allow-Methods", "POST, DELETE, GET, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.set_status(204)  # No Content for preflight
+        self.finish()
+
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")  # Allow all origins
         self.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")  # Allow specific methods
@@ -66,7 +73,7 @@ class UserHandler(tornado.web.RequestHandler):
         # Parse JSON body to create a new user
         try:
             id = await self._database_connector.remove_info_from_table("Users", user_id)
-            self.write("Sucess")
+            self.write(str(id))
         except json.JSONDecodeError:
             self.set_status(400)
             self.write("Invalid JSON data")

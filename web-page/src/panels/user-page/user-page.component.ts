@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UserService } from 'src/services/userService.service';
 import { User } from '../../models/user'
+import { UserDialog } from 'src/components/user-dialog/user-dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'user-page',
@@ -9,7 +11,7 @@ import { User } from '../../models/user'
 })
 export class UserPageComponent implements OnInit {
 
-  constructor(private UserService: UserService) { 
+  constructor(private UserService: UserService, private dialog: MatDialog) { 
     this.users = []
   }
 
@@ -29,8 +31,26 @@ export class UserPageComponent implements OnInit {
         let info = userInfo.replace(/'/g, '"')
         info = info.replace('None' , "null")
         info = JSON.parse(info)
-        this.users.push(new User(info["Name"], info["Email"], info["PhoneNumber"], info["Type"], info["Rfid"]))
+        this.users.push(new User(info["Name"], info["Email"], info["PhoneNumber"], info["Type"], info["Rfid"], info["id"]))
       }
+    })
+  }
+
+  AddUser(): void {
+    const dialogRef = this.dialog.open(UserDialog, {
+      data: {user: {}, callback: (user: User) =>
+      {
+        console.log('Add new User');
+        this.UserService.addUser(user).subscribe((result)=>{
+          this.getUsers()
+        })
+      }},
+    });
+  }
+
+  DeleteUser(id: number): void {
+    this.UserService.deleteUser(id).subscribe((result)=>{
+      this.getUsers()
     })
   }
 

@@ -9,7 +9,10 @@ export class IoCloudTableComponent implements OnInit {
 
   @Input() models: any[] = [];
   @Input() headerInfo: string[] = [];
-  @Output() buttonCallback: EventEmitter<any> = new EventEmitter();
+  @Input() title: string = "";
+  @Output() editCallback: EventEmitter<any> = new EventEmitter();
+  @Output() deleteCallback: EventEmitter<any> = new EventEmitter();
+  @Output() addCallback: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -19,6 +22,16 @@ export class IoCloudTableComponent implements OnInit {
   getModelInfo(key: string, model: any)
   {
     return model[key]
+  }
+
+  onDeleteCallback(id:number)
+  {
+    let result = confirm("Are you sure you want to delete the user?");
+    if (result === true) {
+
+      this.deleteCallback.emit(id)
+    } 
+    
   }
 
 }
