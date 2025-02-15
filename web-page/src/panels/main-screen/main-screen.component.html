@@ -1,3 +1,4 @@
 <div>
-    <user-page></user-page>
+    <user-page *ngIf="mainScreenService.isUsersSelected()"></user-page>
+    <locations-page *ngIf="mainScreenService.isLocationsSelected()"></locations-page>
 </div>

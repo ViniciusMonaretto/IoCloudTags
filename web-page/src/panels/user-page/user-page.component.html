@@ -1,6 +1,6 @@
 <div style="width: 100%;">
     <io-cloud-table [title]="'Users'"
-                    [headerInfo]="['Name', 'Email', 'PhoneNumber', 'Type']" 
+                    [headerInfo]="['Id', 'Name', 'Email', 'PhoneNumber', 'Type']" 
                     [models]="users"
                     (deleteCallback)="DeleteUser($event)"
                     (addCallback)="AddUser()"></io-cloud-table>

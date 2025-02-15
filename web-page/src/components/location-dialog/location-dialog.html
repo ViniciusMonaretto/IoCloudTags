@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Add new Location</h2>
+<mat-dialog-content style="display: flex; flex-direction: column;">
+  <mat-form-field appearance="fill">
+    <mat-label>Adress</mat-label>
+    <input matInput [(ngModel)]=" locationModel.Name" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Block</mat-label>
+    <input matInput [(ngModel)]=" locationModel.Block" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Sector</mat-label>
+    <input matInput [(ngModel)]=" locationModel.Sector" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Manager Id</mat-label>
+    <input matInput [(ngModel)]=" locationModel.ManagerId" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Gateway UUID</mat-label>
+    <input matInput [(ngModel)]=" locationModel.GatewayUUID" />
+  </mat-form-field>
+  
+</mat-dialog-content>
+<mat-dialog-actions> 
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [disabled]="!validForm()" (click)="onAddCLick()" cdkFocusInitial>Add</button>
+</mat-dialog-actions>

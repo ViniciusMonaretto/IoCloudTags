@@ -1,4 +1,5 @@
 <div>
-    <side-nav-option [icon]="'timelapse'" [componentText]="'Sensor'" (buttonCallback)="dummyFunc()"></side-nav-option>
-    <side-nav-option [icon]="'storage'" [componentText]="'Status Logs'" (buttonCallback)="dummyFunc()"></side-nav-option>
+    <side-nav-option [icon]="'person'" [componentText]="'Users'" (buttonCallback)="selectMainScreen('Users')"></side-nav-option>
+    <side-nav-option [icon]="'location_city'" [componentText]="'Locations'" (buttonCallback)="selectMainScreen('Locations')"></side-nav-option>
+    <side-nav-option [icon]="'calendar_today'" [componentText]="'Calendar'" (buttonCallback)="selectMainScreen('Calendar')"></side-nav-option>
 </div>

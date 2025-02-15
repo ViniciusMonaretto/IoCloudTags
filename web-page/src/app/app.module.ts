@@ -10,11 +10,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { MainScreenComponent } from 'src/panels/main-screen/main-screen.component';
 import { NavbarComponent } from 'src/panels/navbar/navbar.component';
 import { UserPageComponent } from 'src/panels/user-page/user-page.component'
+import { LocationsPageComponent } from 'src/panels/locations-page/locations-page.component'
+
 
 //selfmade components
 import { SideNavOptionComponent } from 'src/components/side-nav-option/side-nav-option.component';
 import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-table.component'
 import { UserDialog } from 'src/components/user-dialog/user-dialog'
+import { LocationDialog } from 'src/components/location-dialog/location-dialog'
+
 
 //Angular Material
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -35,11 +39,12 @@ import {MatTableModule} from '@angular/material/table';
     MainScreenComponent,
     NavbarComponent,
     UserPageComponent,
+    LocationsPageComponent,
 
     SideNavOptionComponent,
     IoCloudTableComponent,
-    UserDialog
-    
+    UserDialog,
+    LocationDialog
   ],
   imports: [
     BrowserModule,

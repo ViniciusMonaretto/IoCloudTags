@@ -1,6 +1,9 @@
-<div style="width: 150px;">
+<div style="width: 150px; margin-bottom: 50px;">
     <button (click)="buttonCLick()" class="side-nav-class transparent-button" aria-label="Example icon-button with heart icon">
-        <mat-icon>{{icon}}</mat-icon>
+        <div class="icon-style">
+            <mat-icon class="icon-style">{{icon}}</mat-icon>
+        </div>
+        
         <div>
             {{componentText}}
         </div>
