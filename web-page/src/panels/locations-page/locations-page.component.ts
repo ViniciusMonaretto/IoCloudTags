@@ -28,7 +28,7 @@ export class LocationsPageComponent implements OnInit {
         let info = locationInfo.replace(/'/g, '"')
         info = info.replace('None' , "null")
         info = JSON.parse(info)
-        this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["ManagerId"], info["Id"]))
+        this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["AdminUserId"], info["Id"]))
       }
     })
   }

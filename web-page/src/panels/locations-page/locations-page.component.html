@@ -1,6 +1,6 @@
 <div style="width: 100%;">
     <io-cloud-table [title]="'Locations'"
-                    [headerInfo]="['Name', 'Block', 'Sector', 'ManagerId', ]" 
+                    [headerInfo]="[['Name', 'Nome'], ['Block', 'Bloco'], ['Sector', 'Setor'], ['ManagerId', 'Id do Administrador'], ]" 
                     [models]="locations"
                     (deleteCallback)="DeleteLocation($event)"
                     (addCallback)="AddLocation()"></io-cloud-table>

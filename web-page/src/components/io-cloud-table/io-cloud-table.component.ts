@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class IoCloudTableComponent implements OnInit {
 
   @Input() models: any[] = [];
-  @Input() headerInfo: string[] = [];
+  @Input() headerInfo: string[][] = [];
   @Input() title: string = "";
   @Output() editCallback: EventEmitter<any> = new EventEmitter();
   @Output() deleteCallback: EventEmitter<any> = new EventEmitter();

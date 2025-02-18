@@ -43,7 +43,7 @@ class Location(ModelInterface):
         self._block = model_gen_object["Block"] if "Block" in model_gen_object else self._block
         self._sector = model_gen_object["Sector"] if "Sector" in model_gen_object else self._sector
         self._gateway_uuid = model_gen_object["GatewayUuid"] if "GatewayUuid" in model_gen_object else self._gateway_uuid
-        self._gateway_uuid = model_gen_object["AdminUserId"] if "AdminUserId" in model_gen_object else self._admin_user_id
+        self._admin_user_id = model_gen_object["AdminUserId"] if "AdminUserId" in model_gen_object else self._admin_user_id
     
     def toStr(self) -> str:
         json = {

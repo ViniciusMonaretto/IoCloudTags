@@ -9,11 +9,11 @@
     </div>
     
     <div class="rowTable">
-        <div class="headerCell" *ngFor="let header of headerInfo"> {{header}}</div>
+        <div class="headerCell" *ngFor="let header of headerInfo"> {{header[1]}}</div>
         <div class="headerCell"></div>
     </div>
     <div class="rowTable" *ngFor="let model of models">
-        <div class="bodyCell" *ngFor="let header of headerInfo"> {{getModelInfo(header, model)}}</div>
+        <div class="bodyCell" *ngFor="let header of headerInfo"> {{getModelInfo(header[0], model)}}</div>
         <div class="bodyCell">
             <button mat-icon-button class="example-icon" (click)="editCallback.emit()" aria-label="Edit">
                 <mat-icon>edit</mat-icon>
