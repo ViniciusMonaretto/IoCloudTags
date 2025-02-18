@@ -14,6 +14,8 @@ from .handler.event_api_handler import EventApiHandler
 
 from .visualization.visualization_manager import Visualization
 
+from .handler.login_handler import LoginHandler, LogoutHandler
+
 
 class ApiServer:
     def __init__(self, database_connector: DatabaseConnector,  user_scheduler: UserEventScheduler):
@@ -46,5 +48,7 @@ class ApiServer:
             (r"/user/all", UserHandler, {'database': self._database_connector}),
             (r"/user/(\d+)", UserHandler, {'database': self._database_connector}),
             (r"/event", EventApiHandler, {'database': self._database_connector, 'userSchedule': self._user_scheduler}),
+            (r"/login", LoginHandler, {'database': self._database_connector}),
+            (r"/login", LogoutHandler, {'database': self._database_connector}),
             (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})
         ])

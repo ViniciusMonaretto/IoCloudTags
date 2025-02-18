@@ -6,8 +6,9 @@ from datetime import datetime
 
 from src.services.database_conector.database_connector import DatabaseConnector
 from src.Model.location_model import Location
+from .base_handler import BaseHandler
 
-class LocationHandler(tornado.web.RequestHandler):
+class LocationHandler(BaseHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
 

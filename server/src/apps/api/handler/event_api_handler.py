@@ -8,7 +8,9 @@ from src.services.database_conector.database_connector import DatabaseConnector
 from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
 from src.Model.event_model import EventModel
 
-class EventApiHandler(tornado.web.RequestHandler):
+from .base_handler import BaseHandler
+
+class EventApiHandler(BaseHandler):
     def initialize(self, database: DatabaseConnector, userSchedule: UserEventScheduler):
         self._database_connector = database
         self._event_schedule = userSchedule

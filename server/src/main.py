@@ -7,9 +7,20 @@ from datetime import datetime, timedelta
 
 def prt(user_id = 1, message = ""):
     print(f"Event triggered for user {user_id}: {message}")
+
+
+async def CreateAdminUser(dat: DatabaseConnector):
+    userFound = await dat.find_info_from_table("Users", conditions={"Name": "admin"})
+    if(len(userFound) == 0):
+        user = User()
+        user.initialize("admin", "here", "werwer", TypeOfUser.Admin, "admin", "")
+        await dat.add_info_to_table(user)
+
 async def main():
     dat = DatabaseConnector("")
     await dat.init_service()
+
+    await CreateAdminUser(dat)
 
     user_scheduler = UserEventScheduler(dat)
     await user_scheduler.init_scheduler()
@@ -21,8 +32,6 @@ async def main():
     # now = datetime.now()
 
     # user_scheduler.add_user_event(1, now + timedelta(seconds=20), prt)
-
-    # user = User("Joaquim Barbosa", "joaquim@gmail.com", "5199999999", TypeOfUser.Guard, "teste")
 
     # print(user.verify_password("teste"))
     # print(user.verify_password("teste1"))

@@ -4,8 +4,9 @@ import tornado.web
 
 from src.services.database_conector.database_connector import DatabaseConnector
 from src.Model.user_model import User
+from .base_handler import BaseHandler
 
-class UserChange(tornado.web.RequestHandler):
+class UserChange(BaseHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
     
@@ -30,7 +31,7 @@ class UserChange(tornado.web.RequestHandler):
 
         self.write("Sucess")
 
-class UserHandler(tornado.web.RequestHandler):
+class UserHandler(BaseHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
     

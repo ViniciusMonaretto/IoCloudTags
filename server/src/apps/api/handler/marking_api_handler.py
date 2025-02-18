@@ -6,8 +6,9 @@ from datetime import datetime
 
 from src.services.database_conector.database_connector import DatabaseConnector
 from src.Model.tag_mark_model import TagMark
+from .base_handler import BaseHandler
 
-class TagMarkHandler(tornado.web.RequestHandler):
+class TagMarkHandler(BaseHandler):
     def initialize(self, database: DatabaseConnector):
         self._database_connector = database
 
