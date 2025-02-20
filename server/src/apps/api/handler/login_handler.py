@@ -34,7 +34,7 @@ class LoginHandler(tornado.web.RequestHandler):
         userFound: list[User] = await self._database_connector.find_info_from_table("Users", conditions={"Name": username})
 
         if len(userFound) == 1 and userFound[0].verify_password(password):
-            token = token_manager.add_token(username)
+            token = token_manager.add_token(userFound[0]._type, userFound[0]._id)
             self.write({"message": "Login successful", "token": token})
         else:
             self.set_status(401)

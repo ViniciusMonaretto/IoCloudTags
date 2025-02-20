@@ -15,18 +15,21 @@ class TokenManager:
                     cls._instance.expiration_time = 3600  # Tokens expire after 1 hour
         return cls._instance
 
-    def add_token(self, user_type):
+    def add_token(self, user_type, user_id):
         token = str(uuid.uuid4())
         expiration = time.time() + self.expiration_time
         with self._lock:
-            self.tokens[token] = (user_type, expiration)
+            self.tokens[token] = ({
+                'userType': user_type,
+                'userId': user_id
+                }, expiration)
         return token
 
     def remove_token(self, token):
         with self._lock:
             self.tokens.pop(token, None)
 
-    def validate_token(self, token):
+    def validate_token(self, token): 
         with self._lock:
             if token in self.tokens:
                 user_type, expiration = self.tokens[token]
