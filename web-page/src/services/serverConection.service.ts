@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { API_BASE_URL } from './../constants/http'
 import { Observable, Subscriber } from 'rxjs';
@@ -50,8 +50,9 @@ export class ServerConnectionService {
     }
 
     login(username: string, password: string) {
+        const headers = new HttpHeaders().set('X-Skip-Error-Log', 'true');
         let body = { "username": username, "password": password }
-        this.http.post(`${API_BASE_URL}/login`, body).subscribe({
+        this.http.post(`${API_BASE_URL}/login`, body, { headers }).subscribe({
         next: (result: any) => {
             localStorage.setItem('auth_token', result.token);
             this.router.navigate(['/main'])
