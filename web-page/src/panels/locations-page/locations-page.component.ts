@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from 'src/models/location'
-import { LocationService } from 'src/services/locationService.service';
+import { ServerConnectionService } from 'src/services/serverConection.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { LocationDialog } from 'src/components/location-dialog/location-dialog';
 
@@ -13,7 +13,7 @@ export class LocationsPageComponent implements OnInit {
 
   locations: Array<Location> = []
 
-  constructor( private locationService: LocationService,  private dialog: MatDialog) { }
+  constructor( private locationService: ServerConnectionService,  private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getLocations()
@@ -21,7 +21,7 @@ export class LocationsPageComponent implements OnInit {
 
   getLocations()
   {
-    return this.locationService.requestData().subscribe((response: any) => {
+    return this.locationService.requestDataLocation().subscribe((response: any) => {
       this.locations = []
       for(let locationInfo of response)
       {

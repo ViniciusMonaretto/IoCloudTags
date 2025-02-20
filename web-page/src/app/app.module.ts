@@ -5,12 +5,13 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { MainScreenComponent } from 'src/panels/main-screen/main-screen.component';
 import { NavbarComponent } from 'src/panels/navbar/navbar.component';
 import { UserPageComponent } from 'src/panels/user-page/user-page.component'
 import { LocationsPageComponent } from 'src/panels/locations-page/locations-page.component'
+import { LoginPageComponent } from 'src/panels/login-page/login-page.component';
 
 
 //selfmade components
@@ -18,6 +19,7 @@ import { SideNavOptionComponent } from 'src/components/side-nav-option/side-nav-
 import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-table.component'
 import { UserDialog } from 'src/components/user-dialog/user-dialog'
 import { LocationDialog } from 'src/components/location-dialog/location-dialog'
+import { AlertDialogComponent } from 'src/components/alert-dialog/alert-dialog.component';
 
 
 //Angular Material
@@ -31,6 +33,7 @@ import {MatSelectModule } from '@angular/material/select';
 import {MatInputModule } from '@angular/material/input'; 
 import {MatCardModule} from '@angular/material/card'; 
 import {MatTableModule} from '@angular/material/table'; 
+import { AuthInterceptor } from 'src/services/auth.interceptor';
 
 
 @NgModule({
@@ -40,11 +43,13 @@ import {MatTableModule} from '@angular/material/table';
     NavbarComponent,
     UserPageComponent,
     LocationsPageComponent,
+    LoginPageComponent,
 
     SideNavOptionComponent,
     IoCloudTableComponent,
     UserDialog,
-    LocationDialog
+    LocationDialog,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +69,11 @@ import {MatTableModule} from '@angular/material/table';
     MatCardModule,
     MatTableModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

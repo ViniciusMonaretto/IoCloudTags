@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { UserService } from 'src/services/userService.service';
+import { ServerConnectionService } from 'src/services/serverConection.service';
 import { User } from '../../models/user'
 import { UserDialog } from 'src/components/user-dialog/user-dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 })
 export class UserPageComponent implements OnInit {
 
-  constructor(private UserService: UserService, private dialog: MatDialog) { 
+  constructor(private UserService: ServerConnectionService, private dialog: MatDialog) { 
     this.users = []
   }
 
@@ -24,7 +24,7 @@ export class UserPageComponent implements OnInit {
 
   getUsers()
   {
-    return this.UserService.requestData().subscribe((response: any) => {
+    return this.UserService.requestDataUser().subscribe((response: any) => {
       this.users = []
       for(let userInfo of response)
       {
