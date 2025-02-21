@@ -23,7 +23,7 @@ export class MainScreenService {
         {
             this.selectedScreen = MainScreenOptions.BUILDINGS;
         }
-        else if(name == 'Calendars')
+        else if(name == 'Calendar')
         {
             this.selectedScreen = MainScreenOptions.CALENDAR;
         }

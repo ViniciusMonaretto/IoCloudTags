@@ -19,6 +19,7 @@
                 <div>
                     <user-page *ngIf="mainScreenService.isUsersSelected()"></user-page>
                     <locations-page *ngIf="mainScreenService.isLocationsSelected()"></locations-page>
+                    <schedule-calendar *ngIf="mainScreenService.isCalendarSelected()"></schedule-calendar>
                 </div>                
             </div>
             

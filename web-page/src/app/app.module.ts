@@ -34,6 +34,8 @@ import {MatInputModule } from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatTableModule} from '@angular/material/table'; 
 import { AuthInterceptor } from 'src/services/auth.interceptor';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule-calendar.component';
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { AuthInterceptor } from 'src/services/auth.interceptor';
     UserPageComponent,
     LocationsPageComponent,
     LoginPageComponent,
+    ScheduleCalendarComponent,
 
     SideNavOptionComponent,
     IoCloudTableComponent,
@@ -57,6 +60,7 @@ import { AuthInterceptor } from 'src/services/auth.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FullCalendarModule,
 
     MatSidenavModule,
     MatToolbarModule,
