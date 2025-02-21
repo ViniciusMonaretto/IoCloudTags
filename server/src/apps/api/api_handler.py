@@ -49,6 +49,6 @@ class ApiServer:
             (r"/user/(\d+)", UserHandler, {'database': self._database_connector}),
             (r"/event", EventApiHandler, {'database': self._database_connector, 'userSchedule': self._user_scheduler}),
             (r"/login", LoginHandler, {'database': self._database_connector}),
-            (r"/login", LogoutHandler, {'database': self._database_connector}),
+            (r"/logout", LogoutHandler),
             (r"/(.*\.(js|css|ico|png|jpg|jpeg|woff|woff2|ttf|svg))", tornado.web.StaticFileHandler, {"path": angular_dist})
         ])

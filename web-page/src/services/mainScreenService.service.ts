@@ -7,7 +7,7 @@ import { MainScreenOptions } from 'src/enum/screen-type'
 })
 export class MainScreenService {
 
-    selectedScreen: MainScreenOptions = MainScreenOptions.USERS
+    selectedScreen: MainScreenOptions = MainScreenOptions.CALENDAR
 
     constructor() 
     {

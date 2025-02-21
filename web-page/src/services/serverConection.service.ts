@@ -4,16 +4,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_BASE_URL } from './../constants/http'
 import { Observable, Subscriber } from 'rxjs';
 
+import { UserTypes } from 'src/enum/userTypes';
+
 import { User } from 'src/models/user';
 import { Location } from 'src/models/location';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/components/alert-dialog/alert-dialog.component';
 
+class UserInfo {
+    public userId: number
+    public userType: UserTypes
+
+    constructor(userId: number, userType: UserTypes)
+    {
+        this.userId = userId
+        this.userType = userType
+    }
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ServerConnectionService {
+
+    userInfo: UserInfo | null = null
 
     constructor(private http: HttpClient, private dialog: MatDialog, private router: Router) 
     {
@@ -49,6 +64,13 @@ export class ServerConnectionService {
         return this.http.delete(`${API_BASE_URL}/location/${id}`)
     }
 
+    getLoggedInInfo()
+    {
+        this.http.get(`${API_BASE_URL}/logout`).subscribe((result: any)=>{
+            this.userInfo = new UserInfo(result.userId, result.userType)
+        })
+    }
+
     login(username: string, password: string) {
         const headers = new HttpHeaders().set('X-Skip-Error-Log', 'true');
         let body = { "username": username, "password": password }
@@ -56,6 +78,7 @@ export class ServerConnectionService {
         next: (result: any) => {
             localStorage.setItem('auth_token', result.token);
             this.router.navigate(['/main'])
+            
 
         },
         error: (result) => {
@@ -65,5 +88,15 @@ export class ServerConnectionService {
             })
         }
         })
+    }
+
+    hasAdminAccess()
+    {
+        return this.userInfo?.userType === UserTypes.Admin
+    }
+
+    hasManagerAccess()
+    {
+        return this.hasAdminAccess() || this.userInfo?.userType === UserTypes.Sindic
     }
 }

@@ -11,6 +11,7 @@ export class MainScreenComponent implements OnInit {
   constructor(public mainScreenService: MainScreenService) { }
 
   ngOnInit(): void {
+    
   }
 
 }

@@ -41,6 +41,13 @@ class LoginHandler(tornado.web.RequestHandler):
             self.write({"error": "Invalid username or password"})
 
 class LogoutHandler(BaseHandler):
+    def get(self):
+        self.set_header("Content-Type", "application/json")
+        user = self.current_user
+        obj = {"userId": user['userId'],
+               "userType": user['userType'].value}
+        self.write(obj)
+
     def post(self):
         token = self.request.headers.get("Authorization")
         token_manager = TokenManager()

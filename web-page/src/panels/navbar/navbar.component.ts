@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
 import { MainScreenService } from 'src/services/mainScreenService.service'
+import { ServerConnectionService } from 'src/services/serverConection.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +11,11 @@ import { MainScreenService } from 'src/services/mainScreenService.service'
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, public mainScreenService: MainScreenService) { }
+  constructor(public dialog: MatDialog, public mainScreenService: MainScreenService, 
+    public serverConnection: ServerConnectionService) { }
 
   ngOnInit(): void {
+    this.serverConnection.getLoggedInInfo()
   }
 
   selectMainScreen(screen: string)
