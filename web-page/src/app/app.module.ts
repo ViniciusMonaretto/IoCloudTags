@@ -12,6 +12,7 @@ import { NavbarComponent } from 'src/panels/navbar/navbar.component';
 import { UserPageComponent } from 'src/panels/user-page/user-page.component'
 import { LocationsPageComponent } from 'src/panels/locations-page/locations-page.component'
 import { LoginPageComponent } from 'src/panels/login-page/login-page.component';
+import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule-calendar.component';
 
 
 //selfmade components
@@ -20,6 +21,8 @@ import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-ta
 import { UserDialog } from 'src/components/user-dialog/user-dialog'
 import { LocationDialog } from 'src/components/location-dialog/location-dialog'
 import { AlertDialogComponent } from 'src/components/alert-dialog/alert-dialog.component';
+import { EventDialogComponent } from 'src/components/event-dialog/event-dialog.component';
+
 
 
 //Angular Material
@@ -35,7 +38,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table'; 
 import { AuthInterceptor } from 'src/services/auth.interceptor';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule-calendar.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -52,7 +56,8 @@ import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule
     IoCloudTableComponent,
     UserDialog,
     LocationDialog,
-    AlertDialogComponent
+    AlertDialogComponent,
+    EventDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +75,8 @@ import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule,
     MatTableModule
   ],

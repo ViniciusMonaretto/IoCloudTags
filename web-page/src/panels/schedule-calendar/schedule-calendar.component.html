@@ -6,18 +6,18 @@
         <mat-dialog-content  style="display: flex; flex-direction: row; justify-content: flex-start;">
             <mat-form-field *ngIf="serverConnection.hasAdminAccess()" style="margin-right: 20px;" appearance="fill">
                 <mat-label>Usuários</mat-label>
-                <mat-select  [(ngModel)]="selectedUserId">
-                    <mat-option  *ngFor="let user of users" [value]="user.Id">{{user.Name}}</mat-option>
+                <mat-select  [(ngModel)]="selectedUser">
+                    <mat-option  *ngFor="let user of users" [value]="user">{{user.Name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field *ngIf="serverConnection.hasManagerAccess()" appearance="fill">
                 <mat-label>Endereços</mat-label>
-                <mat-select  [(ngModel)]="selectedLocationId">
-                    <mat-option  *ngFor="let location of locations" [value]="location.Id">{{location.Name}}</mat-option>
+                <mat-select  [(ngModel)]="selectedLocation">
+                    <mat-option  *ngFor="let location of locations" [value]="location">{{location.Name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </mat-dialog-content>
-        
+        <button mat-button [disabled]="!validForm()" (click)="requestEvents()" cdkFocusInitial>Add</button>
     </div>
 
     <full-calendar [options]="calendarOptions"></full-calendar>

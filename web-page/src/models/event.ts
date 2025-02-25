@@ -4,6 +4,7 @@ export class Event
     UserId: Number
     BeginDate: Date
     EndDate: Date
+    Id: Number
 
     constructor(locationId: Number, userId: Number, beginDate: Date, endDate: Date)
     {
@@ -11,5 +12,6 @@ export class Event
         this.LocationId = locationId
         this.BeginDate = beginDate
         this.EndDate = endDate
+        this.Id = 0
     }
 }

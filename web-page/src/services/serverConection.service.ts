@@ -71,14 +71,27 @@ export class ServerConnectionService {
         })
     }
 
-    getEvents(idOfUser: number, idOfLocation: number): Observable<any>
+    getEvents(idOfUser: any|null, idOfLocation: any|null): Observable<any>
     {
         let params = new HttpParams();
-        params = params.append("Id", idOfUser);
-        params = params.append("LocaionId", idOfLocation);
+        if(idOfUser)
+        {  
+            params = params.append("Id", idOfUser);
+        }
 
+        if(idOfLocation)
+        {
+            params = params.append("LocaionId", idOfLocation);
+        }
+            
+        
         
         return this.http.get(`${API_BASE_URL}/event`, { params })
+    }
+
+    addEvent(event: any)
+    {
+        return this.http.post(`${API_BASE_URL}/event`, event)
     }
 
     login(username: string, password: string) {

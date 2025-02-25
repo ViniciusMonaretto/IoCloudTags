@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CalendarOptions } from '@fullcalendar/core';
+import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -9,6 +9,7 @@ import { ServerConnectionService } from 'src/services/serverConection.service';
 import { Location } from 'src/models/location';
 import { User } from 'src/models/user';
 import { Event } from 'src/models/event';
+import { EventDialogComponent } from 'src/components/event-dialog/event-dialog.component';
 
 @Component({
   selector: 'schedule-calendar',
@@ -18,11 +19,11 @@ import { Event } from 'src/models/event';
 
 export class ScheduleCalendarComponent implements OnInit {
 
-    events: Array<Event> = []
+    events: Array<EventInput> = []
     locations: Array<Location> = []
     users: Array<User> = []
-    selectedUserId: number = 0
-    selectedLocationId: number = 0
+    selectedUser: User|null = null
+    selectedLocation: Location|null = null
 
     constructor(public dialog: MatDialog, public serverConnection: ServerConnectionService) { }
 
@@ -56,12 +57,12 @@ export class ScheduleCalendarComponent implements OnInit {
 
     validForm()
     {
-      return this.selectedLocationId != null || this.selectedUserId != null
+      return this.selectedUser != null || this.selectedLocation != null
     }
 
     requestEvents()
     {
-      this.serverConnection.getEvents(this.selectedUserId, this.selectedLocationId).subscribe((result)=>{
+      this.serverConnection.getEvents(this.selectedUser?.Id, this.selectedLocation?.Id).subscribe((result)=>{
           this.events = []
           for(let eventInfo of result)
           {
@@ -93,10 +94,20 @@ export class ScheduleCalendarComponent implements OnInit {
       events: [
         { title: 'Reunião de equipe', start: '2025-02-17T10:00:00', end: '2025-02-17T13:00:00' },
         { title: 'Entrega do projeto', start: '2025-02-20T15:00:00' }
-      ]
+      ],
+      dateClick: this.handleDateClick.bind(this)
     };
 
     handleDateClick(arg: any) {
-      alert('date click! ' + arg.dateStr)
+      const dialogRef = this.dialog.open(EventDialogComponent, {
+        data: {user: {}, begin: arg.dateStr,
+        callback: (event: Event) =>
+        {
+          console.log('Add new User');
+          this.serverConnection.addEvent(event).subscribe((result)=>{
+            this.requestEvents()
+          })
+        }},
+      });
     }
   }
