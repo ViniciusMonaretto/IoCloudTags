@@ -15,7 +15,7 @@
             </button>
         </mat-toolbar>
         <div style="background-color: #e6e1e1; height: 95%;">
-            <div class="router-div">
+            <div class="router-div" style="    overflow: auto;">
                 <div>
                     <user-page *ngIf="mainScreenService.isUsersSelected()"></user-page>
                     <locations-page *ngIf="mainScreenService.isLocationsSelected()"></locations-page>

@@ -12,7 +12,7 @@ import {User} from "../../models/user"
 export class UserDialog {
   public userModule: User = new User("", "", "", 1, "", 0)
 
-  public userTypes = Object.values(UserTypes);
+  public userTypes = Object.keys(UserTypes).filter(key => isNaN(Number(key)));;
 
   constructor(public dialogRef: MatDialogRef<UserDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -24,13 +24,17 @@ export class UserDialog {
     this.dialogRef.close();
   }
 
+  getRoleValue(roleName: any): number | undefined {
+    return UserTypes[roleName as keyof typeof UserTypes]; // Lookup enum by key
+  }
+
   getUserData()
   {
     return {
       "Name": this.userModule.Name,
       "Email": this.userModule.Email,
       "PhoneNumber": this.userModule.PhoneNumber,
-      "Type": this.userModule.Type,
+      "Type": this.getRoleValue(this.userModule.Type),
       "Rfid": this.userModule.Rfid,
       "Password": this.userModule.Password
     }

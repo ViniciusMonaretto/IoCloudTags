@@ -53,19 +53,21 @@ class IoCLoudMqttCLient:
         
 
     async def mqtt_receiver(self):
-        """Task to receive MQTT messages."""
-        await self._client.subscribe(SUBSCRIBE_TOPIC)
-        print(f"Subscribed to {SUBSCRIBE_TOPIC}")
-
-        try:
-            async with self._client.messages() as messages:
-                async for message in messages:
-                    await self.on_message(message)
-                    if self._stop_event.is_set():
-                        print("Stop event set, exiting receiver...")
-                        break
-        except MqttError as e:
-            print(f"MQTT error while receiving: {e}")
+        while not self._stop_event.is_set():
+            try:
+                async with MqttClient(MQTT_SERVER, MQTT_PORT) as client:
+                    self._client = client
+                    await self._client.subscribe(SUBSCRIBE_TOPIC)
+                    print(f"Subscribed to {SUBSCRIBE_TOPIC}")
+                    async with client.messages() as messages:
+                        async for message in messages:
+                            await self.on_message(message)
+                            if self._stop_event.is_set():
+                                print("Stop event set, exiting receiver...")
+                                return
+            except MqttError as e:
+                print(f"MQTT error, reconnecting in 5 seconds: {e}")
+                await asyncio.sleep(5)
 
     async def mqtt_sender(client):
         """Task to send MQTT messages."""

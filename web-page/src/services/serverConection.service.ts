@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { API_BASE_URL } from './../constants/http'
 import { Observable, Subscriber } from 'rxjs';
@@ -71,6 +71,16 @@ export class ServerConnectionService {
         })
     }
 
+    getEvents(idOfUser: number, idOfLocation: number): Observable<any>
+    {
+        let params = new HttpParams();
+        params = params.append("Id", idOfUser);
+        params = params.append("LocaionId", idOfLocation);
+
+        
+        return this.http.get(`${API_BASE_URL}/event`, { params })
+    }
+
     login(username: string, password: string) {
         const headers = new HttpHeaders().set('X-Skip-Error-Log', 'true');
         let body = { "username": username, "password": password }
@@ -92,11 +102,11 @@ export class ServerConnectionService {
 
     hasAdminAccess()
     {
-        return this.userInfo?.userType === UserTypes.Admin
+        return this.userInfo?.userType === UserTypes.Administrador
     }
 
     hasManagerAccess()
     {
-        return this.hasAdminAccess() || this.userInfo?.userType === UserTypes.Sindic
+        return this.hasAdminAccess() || this.userInfo?.userType === UserTypes.Sindico
     }
 }
