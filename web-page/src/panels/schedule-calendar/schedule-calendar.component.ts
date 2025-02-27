@@ -35,7 +35,7 @@ export class ScheduleCalendarComponent implements OnInit {
           let info = locationInfo.replace(/'/g, '"')
           info = info.replace('None' , "null")
           info = JSON.parse(info)
-          this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["AdminUserId"], info["Id"]))
+          this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["AdminUserId"], info["id"]))
         }
       })
       
@@ -100,14 +100,18 @@ export class ScheduleCalendarComponent implements OnInit {
 
     handleDateClick(arg: any) {
       const dialogRef = this.dialog.open(EventDialogComponent, {
-        data: {user: {}, begin: arg.dateStr,
-        callback: (event: Event) =>
-        {
-          console.log('Add new User');
-          this.serverConnection.addEvent(event).subscribe((result)=>{
-            this.requestEvents()
-          })
-        }},
+        data: {
+          users: this.users, 
+          locations: this.locations, 
+          begin: arg.dateStr,
+          callback: (event: Event) =>
+          {
+            console.log('Add new User');
+            this.serverConnection.addEvent(event).subscribe((result)=>{
+              this.requestEvents()
+            })
+          }
+        },
       });
     }
   }

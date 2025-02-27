@@ -35,8 +35,8 @@ export class EventDialogComponent implements OnInit {
   {
     return {
       "LocationId": this.eventModel.LocationId,
-      "BeginDate": this.eventModel.BeginDate,
-      "EndDate": this.eventModel.EndDate,
+      "BeginDate": this.eventModel.BeginDate.toISOString(),
+      "EndDate": this.eventModel.EndDate.toISOString(),
       "UserId": this.eventModel.UserId,
       "Id": this.eventModel.Id
     }
