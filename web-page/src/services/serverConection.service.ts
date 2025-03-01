@@ -64,10 +64,14 @@ export class ServerConnectionService {
         return this.http.delete(`${API_BASE_URL}/location/${id}`)
     }
 
-    getLoggedInInfo()
+    getLoggedInInfo(callback?: any)
     {
         this.http.get(`${API_BASE_URL}/logout`).subscribe((result: any)=>{
             this.userInfo = new UserInfo(result.userId, result.userType)
+            if(callback)
+            {
+                callback();
+            }
         })
     }
 
@@ -100,9 +104,9 @@ export class ServerConnectionService {
         this.http.post(`${API_BASE_URL}/login`, body, { headers }).subscribe({
         next: (result: any) => {
             localStorage.setItem('auth_token', result.token);
-            this.router.navigate(['/main'])
-            
-
+            this.getLoggedInInfo(()=>{
+                this.router.navigate(['/main'])
+            })
         },
         error: (result) => {
             this.dialog.open(AlertDialogComponent, {

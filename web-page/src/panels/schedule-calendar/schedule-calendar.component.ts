@@ -28,30 +28,35 @@ export class ScheduleCalendarComponent implements OnInit {
     constructor(public dialog: MatDialog, public serverConnection: ServerConnectionService) { }
 
     ngOnInit(): void {
-      this.serverConnection.requestDataLocation().subscribe((response) => {
-        this.locations = []
-        for(let locationInfo of response)
+      setTimeout(
+        ()=>
         {
-          let info = locationInfo.replace(/'/g, '"')
-          info = info.replace('None' , "null")
-          info = JSON.parse(info)
-          this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["AdminUserId"], info["id"]))
-        }
-      })
-      
-      if(this.serverConnection.hasAdminAccess())
-      {
-        this.serverConnection.requestDataUser().subscribe((response) => {
-          this.users = []
-          for(let userInfo of response)
+          this.serverConnection.requestDataLocation().subscribe((response) => {
+            this.locations = []
+            for(let locationInfo of response)
+            {
+              let info = locationInfo.replace(/'/g, '"')
+              info = info.replace('None' , "null")
+              info = JSON.parse(info)
+              this.locations.push(new Location(info["Name"], info["Block"], info["Sector"], info["GatewayUuid"], info["AdminUserId"], info["id"]))
+            }
+          })
+          
+          if(this.serverConnection.hasAdminAccess())
           {
-            let info = userInfo.replace(/'/g, '"')
-            info = info.replace('None' , "null")
-            info = JSON.parse(info)
-            this.users.push(new User(info["Name"], info["Email"], info["PhoneNumber"], info["Type"], info["Rfid"], info["id"]))
+            this.serverConnection.requestDataUser().subscribe((response) => {
+              this.users = []
+              for(let userInfo of response)
+              {
+                let info = userInfo.replace(/'/g, '"')
+                info = info.replace('None' , "null")
+                info = JSON.parse(info)
+                this.users.push(new User(info["Name"], info["Email"], info["PhoneNumber"], info["Type"], info["Rfid"], info["id"]))
+              }
+            })
           }
-        })
-      }
+        }, 500);
+      
       
     }
 
@@ -64,13 +69,19 @@ export class ScheduleCalendarComponent implements OnInit {
     {
       this.serverConnection.getEvents(this.selectedUser?.Id, this.selectedLocation?.Id).subscribe((result)=>{
           this.events = []
+
           for(let eventInfo of result)
           {
             let info = eventInfo.replace(/'/g, '"')
             info = info.replace('None' , "null")
             info = JSON.parse(info)
-            this.events.push(new Event(info["LocationId"], info["UserId"],new Date(info["BeginDate"]),new Date(info["EndDate"])))
+            let location = this.locations.find(x => x.Id == info["LocationId"])
+            let evt = { title: location?.Name, 
+              date: new Date(info["BeginDate"]).toISOString(),
+              end: new Date(info["EndDate"]).toISOString() }
+            this.events.push(evt)
           }
+          this.calendarOptions.events = this.events
         })
     }
     

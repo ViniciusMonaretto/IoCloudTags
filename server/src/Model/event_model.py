@@ -4,6 +4,8 @@ from .location_model import Location
 
 from datetime import datetime
 
+from zoneinfo import ZoneInfo
+
     
 class EventModel(ModelInterface):
     _location_id: int
@@ -38,17 +40,29 @@ class EventModel(ModelInterface):
     def setModelObject(self, model_gen_object: dict[str, object]):
         self._id = model_gen_object["id"]
         self._user_id = model_gen_object["UserId"]
+
         self._location_id = model_gen_object["LocationId"]
-        self._begin_date = model_gen_object["BeginDate"]
-        self._end_date = model_gen_object["EndDate"]
+
+        if(isinstance(model_gen_object["BeginDate"], str)):
+            self._begin_date = datetime.strptime(model_gen_object["BeginDate"], "%Y-%m-%d %H:%M:%S%z")
+        else:
+            self._begin_date = model_gen_object["BeginDate"]
+
+        if(isinstance(model_gen_object["EndDate"], str)):
+            self._begin_date = datetime.strptime(model_gen_object["EndDate"], "%Y-%m-%d %H:%M:%S%z")
+        else:
+            self._begin_date = model_gen_object["EndDate"]
     
     def toStr(self) -> str:
+        utc_dt_begin = self._begin_date.astimezone(ZoneInfo("UTC"))
+        utc_dt_end = self._begin_date.astimezone(ZoneInfo("UTC"))
+
         json = {
             "id": self._id,
             "UserId": self._user_id,
             "LocationId": self._location_id,
-            "BeginDate": str(self._begin_date),
-            "EndDate": str(self._end_date)
+            "BeginDate": utc_dt_begin.strftime("%Y-%m-%d %H:%M:%SZ"),
+            "EndDate": utc_dt_end.strftime("%Y-%m-%d %H:%M:%SZ")
         }
 
         return str(json)

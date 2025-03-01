@@ -15,6 +15,9 @@ export class EventDialogComponent implements OnInit {
   users: Array<User> = []
   locations: Array<Location> = []
 
+  selectedTimeBegin: string = ""
+  selectedTimeEnd: string = ""
+
   constructor(public dialogRef: MatDialogRef<EventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -26,6 +29,9 @@ export class EventDialogComponent implements OnInit {
     dateEnd.setMinutes(dateEnd.getMinutes() + 30);
     this.eventModel.BeginDate = dateBegin
     this.eventModel.EndDate = dateEnd
+
+    this.selectedTimeBegin = dateBegin.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false })
+    this.selectedTimeEnd = dateEnd.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false })
   }
 
   ngOnInit(): void {

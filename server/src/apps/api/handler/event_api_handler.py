@@ -3,6 +3,7 @@ import tornado.ioloop
 import tornado.web
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from src.services.database_conector.database_connector import DatabaseConnector
 from src.services.user_event_scheduler.user_event_scheduler import UserEventScheduler
@@ -39,8 +40,8 @@ class EventApiHandler(AdminHandler):
                 self.write("Location not found")
                 return 
             
-            begin_date = datetime.strptime(new_event["BeginDate"], "%Y-%m-%d %H:%M:%S")
-            end_date = datetime.strptime(new_event["EndDate"], "%Y-%m-%d %H:%M:%S")
+            begin_date = datetime.fromisoformat(new_event["BeginDate"].rstrip("Z")).replace(tzinfo=ZoneInfo("UTC"))
+            end_date = datetime.fromisoformat(new_event["EndDate"].rstrip("Z")).replace(tzinfo=ZoneInfo("UTC"))
 
             evt = EventModel()
             evt.initialize(location[0], user[0], begin_date, end_date)
