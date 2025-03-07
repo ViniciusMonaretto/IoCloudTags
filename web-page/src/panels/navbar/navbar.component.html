@@ -1,5 +1,6 @@
 <div>
-    <side-nav-option *ngIf="serverConnection.hasAdminAccess()" [icon]="'person'" [componentText]="'Users'" (buttonCallback)="selectMainScreen('Users')"></side-nav-option>
-    <side-nav-option *ngIf="serverConnection.hasManagerAccess()" [icon]="'location_city'" [componentText]="'Locations'" (buttonCallback)="selectMainScreen('Locations')"></side-nav-option>
-    <side-nav-option [icon]="'calendar_today'" [componentText]="'Calendar'" (buttonCallback)="selectMainScreen('Calendar')"></side-nav-option>
+    <side-nav-option *ngIf="serverConnection.hasAdminAccess()" [icon]="'person'" [componentText]="'Usuários'" (buttonCallback)="selectMainScreen('Users')"></side-nav-option>
+    <side-nav-option *ngIf="serverConnection.hasManagerAccess()" [icon]="'location_city'" [componentText]="'Locais'" (buttonCallback)="selectMainScreen('Locations')"></side-nav-option>
+    <side-nav-option [icon]="'calendar_today'" [componentText]="'Calendário'" (buttonCallback)="selectMainScreen('Calendar')"></side-nav-option>
+    <side-nav-option [icon]="'access_time'" [componentText]="'Batidas de ponto'" (buttonCallback)="selectMainScreen('Marks')"></side-nav-option>
 </div>

@@ -27,6 +27,10 @@ export class MainScreenService {
         {
             this.selectedScreen = MainScreenOptions.CALENDAR;
         }
+        else if(name == 'Marks')
+        {
+            this.selectedScreen = MainScreenOptions.MARKS;
+        }
     }
 
     isUsersSelected()
@@ -42,6 +46,11 @@ export class MainScreenService {
     isCalendarSelected()
     {
         return this.selectedScreen == MainScreenOptions.CALENDAR;
+    }
+
+    isMarkTableSelected()
+    {
+        return this.selectedScreen == MainScreenOptions.MARKS;
     }
 
 }

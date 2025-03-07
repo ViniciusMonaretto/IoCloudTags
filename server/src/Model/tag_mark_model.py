@@ -2,6 +2,7 @@ from .model_interface import ModelInterface
 from .user_model import User
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
     
 class TagMark(ModelInterface):
@@ -34,14 +35,18 @@ class TagMark(ModelInterface):
         self._id = model_gen_object["id"]
         self._user_id = model_gen_object["UserId"]
         self._location_id = model_gen_object["LocationId"]
-        self._timestamp = model_gen_object["Timestamp"]
+        if(isinstance(model_gen_object["Timestamp"], str)):
+            self._timestamp = datetime.strptime(model_gen_object["Timestamp"], "%Y-%m-%d %H:%M:%S%z")
+        else:
+            self._timestamp = model_gen_object["BeginDate"]
     
     def toStr(self) -> str:
+        timestamp = self._timestamp.astimezone(ZoneInfo("UTC"))
         json = {
             "id": self._id,
             "UserId": self._user_id,
             "LocationId": self._location_id,
-            "Timestamp": str(self._timestamp)
+            "Timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%SZ")
         }
 
         return str(json)

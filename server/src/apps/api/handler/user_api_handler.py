@@ -46,7 +46,7 @@ class UserHandler(AdminHandler):
                             new_user_model["PhoneNumber"],
                             new_user_model["Type"],
                             new_user_model["Password"],
-                            None)
+                            new_user_model['Rfid'])
             id = await self._database_connector.add_info_to_table(user)
             self.write(str(id))
         except json.JSONDecodeError:

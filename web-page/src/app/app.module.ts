@@ -15,16 +15,6 @@ import { LoginPageComponent } from 'src/panels/login-page/login-page.component';
 import { ScheduleCalendarComponent } from 'src/panels/schedule-calendar/schedule-calendar.component';
 
 
-//selfmade components
-import { SideNavOptionComponent } from 'src/components/side-nav-option/side-nav-option.component';
-import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-table.component'
-import { UserDialog } from 'src/components/user-dialog/user-dialog'
-import { LocationDialog } from 'src/components/location-dialog/location-dialog'
-import { AlertDialogComponent } from 'src/components/alert-dialog/alert-dialog.component';
-import { EventDialogComponent } from 'src/components/event-dialog/event-dialog.component';
-
-
-
 //Angular Material
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -36,10 +26,25 @@ import {MatSelectModule } from '@angular/material/select';
 import {MatInputModule } from '@angular/material/input'; 
 import {MatCardModule} from '@angular/material/card'; 
 import {MatTableModule} from '@angular/material/table'; 
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
+//selfmade components
+import { SideNavOptionComponent } from 'src/components/side-nav-option/side-nav-option.component';
+import { IoCloudTableComponent } from 'src/components/io-cloud-table/io-cloud-table.component'
+import { UserDialog } from 'src/components/user-dialog/user-dialog'
+import { LocationDialog } from 'src/components/location-dialog/location-dialog'
+import { AlertDialogComponent } from 'src/components/alert-dialog/alert-dialog.component';
+import { EventDialogComponent } from 'src/components/event-dialog/event-dialog.component';
 import { AuthInterceptor } from 'src/services/auth.interceptor';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MarksTableComponent } from 'src/panels/marks-table/marks-table.component';
+
+
+
+
+
 
 
 @NgModule({
@@ -51,6 +56,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     LocationsPageComponent,
     LoginPageComponent,
     ScheduleCalendarComponent,
+    MarksTableComponent,
 
     SideNavOptionComponent,
     IoCloudTableComponent,
@@ -78,7 +84,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -75,12 +75,35 @@ export class ServerConnectionService {
         })
     }
 
+    getTagMark(userId?: any, localId?: any, timestamp?: any): Observable<any>
+    {
+        let params = new HttpParams();
+        if(userId)
+        {  
+            params = params.append("UserId", userId);
+        }
+
+        if(localId)
+        {
+            params = params.append("LocationId", localId);
+        }
+
+        if(timestamp)
+        {
+            params = params.append("Timestamp", timestamp);
+        }
+            
+        
+        
+        return this.http.get(`${API_BASE_URL}/tagmark`, { params })
+    }
+
     getEvents(idOfUser: any|null, idOfLocation: any|null): Observable<any>
     {
         let params = new HttpParams();
         if(idOfUser)
         {  
-            params = params.append("Id", idOfUser);
+            params = params.append("UserId", idOfUser);
         }
 
         if(idOfLocation)

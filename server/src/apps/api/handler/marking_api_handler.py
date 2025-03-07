@@ -3,6 +3,7 @@ import tornado.ioloop
 import tornado.web
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from src.services.database_conector.database_connector import DatabaseConnector
 from src.Model.tag_mark_model import TagMark
@@ -14,8 +15,25 @@ class TagMarkHandler(BaseHandler):
 
     async def get(self, user_id=None):
         self.set_header("Content-Type", "application/json")
-        condition = {"UserId": user_id} if user_id and user_id!="all" else None
-        markings = await self._database_connector.find_info_from_table("TagMarks", condition)
+        condition = None
+        bigger_condition = None
+        location = self.get_query_argument("LocationId", default=None)
+        user = self.get_query_argument("UserId", default=None)
+        timestamp = self.get_query_argument("Timestamp", default=None)
+
+        if location or user:
+            condition = {}
+            if location: 
+                condition["LocationId"] = location
+            if user: 
+                condition["UserId"] = location
+
+        if timestamp:
+            bigger_condition = {
+                    "Timestamp": datetime.fromisoformat(timestamp.rstrip("Z")).replace(tzinfo=ZoneInfo("UTC"))
+                }
+
+        markings = await self._database_connector.find_info_from_table("TagMarks", condition, bigger_condition)
         self.write(str([str(mark) for mark in markings]))
 
     async def post(self):

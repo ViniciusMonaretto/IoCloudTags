@@ -7,9 +7,10 @@ import json
 from src.services.database_conector.database_connector import DatabaseConnector
 
 from src.Model.tag_mark_model import TagMark
+from zoneinfo import ZoneInfo
 
 
-SUBSCRIBE_TOPIC = "/ioCLoud/#"
+SUBSCRIBE_TOPIC = "/iocloud/#"
 
 MQTT_SERVER = "mqtt.eclipseprojects.io"
 
@@ -26,7 +27,7 @@ class IoCLoudMqttCLient:
         payload =  json.loads(msg.payload.decode())
         msg_split = topic.split('/')
 
-        if not len(msg_split) == 4:
+        if not len(msg_split) == 6:
             print(f"IoCloud::on_message: mqtt topic {topic} not valid")
             return
 
@@ -34,7 +35,9 @@ class IoCLoudMqttCLient:
 
         print(f"Received message: {topic} {payload} {id}")
 
-        user_query = (await self._database_connector.find_info_from_table("Users", {"Rfid": payload["rfid"]}))
+        user_rfid = "".join(map(str, payload["data"]))
+
+        user_query = (await self._database_connector.find_info_from_table("Users", {"Rfid": user_rfid}))
         if len(user_query) == 0:
             return
         
@@ -45,7 +48,7 @@ class IoCLoudMqttCLient:
             return 
         
         user = user_query[0]
-        time = datetime.fromisoformat(payload["timestamp"])
+        time =  datetime.fromisoformat(payload["timestamp"]).replace(tzinfo=ZoneInfo("UTC"))
 
         tag_mark = TagMark()
         tag_mark.initialize(location_query[0]._id, user, time)
